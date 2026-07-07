@@ -24,6 +24,9 @@ profile.cov
 /taskrunner
 /bin/
 
+# Generated report
+/METRICS.md
+
 # Go workspace file
 go.work
 go.work.sum
