@@ -36,7 +36,7 @@ func (t *DownloadTask) Execute(ctx context.Context) error {
 		}
 		return &TaskError{Code: code, TaskID: t.id, Err: err}
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return &TaskError{Code: CodeExecution, TaskID: t.id, Err: fmt.Errorf("unexpected status: %s", resp.Status)}
@@ -46,7 +46,7 @@ func (t *DownloadTask) Execute(ctx context.Context) error {
 	if err != nil {
 		return &TaskError{Code: CodeExecution, TaskID: t.id, Err: err}
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	_, err = io.Copy(f, resp.Body)
 	if err != nil {
